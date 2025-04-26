@@ -2,11 +2,13 @@ from flask import Blueprint, request, jsonify
 from app.models.user_model import get_user_by_username
 from app.models.login_model import create_login_log
 from app.models.user_model import create_user
+from app import blacklist
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
     jwt_required,
-    get_jwt_identity
+    get_jwt_identity,
+    get_jwt
 )
 
 api_bp = Blueprint('api', __name__)
@@ -55,6 +57,14 @@ def profile():
     return jsonify({
         'message': f'Welcome {current_user}!'
     })
+
+
+@api_bp.route('/logout', methods=['POST'])
+@jwt_required(refresh=True)
+def logout():
+    jti = get_jwt()['jti']  # JWT ID
+    blacklist.add(jti)
+    return jsonify({"message": "Refresh token revoked"}), 200
 
 
 
