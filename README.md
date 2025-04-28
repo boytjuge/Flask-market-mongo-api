@@ -128,4 +128,4 @@ MIT License
 
 ---
 
-> Developed with ❤️ by [your name]
+> Developed with ❤️ by [Ponlawat007@gmail.com]
